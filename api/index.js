@@ -31,7 +31,7 @@ app.get("/api/protected", authMiddleware, (req, res) => {
   });
 });
 
-// MongoDB Connection (NO app.listen here)
+// MongoDB Connection
 mongoose
   .connect(process.env.MONGO_URI)
   .then(() => console.log("MongoDB Connected"))
