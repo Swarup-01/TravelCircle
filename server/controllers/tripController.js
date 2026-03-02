@@ -1,10 +1,16 @@
-const Trip = require("../models/Trip");
+const Trip = require("../models/Trip.js");
 
 // CREATE TRIP
-exports.createTrip = async (req, res) => {
+export const createTrip = async (req, res) => {
   try {
-    const { title, destination, startDate, endDate, estimatedBudget, duration } =
-      req.body;
+    const {
+      title,
+      destination,
+      startDate,
+      endDate,
+      estimatedBudget,
+      duration,
+    } = req.body;
 
     const newTrip = await Trip.create({
       user: req.user.id, // comes from authMiddleware
@@ -13,7 +19,7 @@ exports.createTrip = async (req, res) => {
       startDate,
       endDate,
       estimatedBudget,
-      duration
+      duration,
     });
 
     res.status(201).json({
@@ -26,7 +32,7 @@ exports.createTrip = async (req, res) => {
 };
 
 // GET MY TRIPS WITH CALCULATIONS
-exports.getMyTrips = async (req, res) => {
+export const getMyTrips = async (req, res) => {
   try {
    const trips = await Trip.find({ user: req.user.id });
 
@@ -55,7 +61,7 @@ exports.getMyTrips = async (req, res) => {
 
 
 // ADD EXPENSE TO TRIP
-exports.addExpense = async (req, res) => {
+export const addExpense = async (req, res) => {
   try {
     const { title, amount, category } = req.body;
     const { tripId } = req.params;
@@ -86,7 +92,7 @@ exports.addExpense = async (req, res) => {
 };
 
 // GET AVERAGE SPENDING BY DESTINATION
-exports.getBudgetPrediction = async (req, res) => {
+export const getBudgetPrediction = async (req, res) => {
   try {
     const { destination } = req.params;
 
@@ -135,7 +141,7 @@ exports.getBudgetPrediction = async (req, res) => {
 };
 
 // TOGGLE PUBLIC STATUS
-exports.togglePublic = async (req, res) => {
+export const togglePublic = async (req, res) => {
   try {
     const { tripId } = req.params;
 
@@ -164,7 +170,7 @@ exports.togglePublic = async (req, res) => {
 };
 
 // GET ALL PUBLIC TRIPS
-exports.getPublicTrips = async (req, res) => {
+export const getPublicTrips = async (req, res) => {
   try {
     const trips = await Trip.find({ isPublic: true }).populate("user", "name");
 
@@ -192,7 +198,7 @@ exports.getPublicTrips = async (req, res) => {
 };
 
 // LIKE / UNLIKE TRIP
-exports.toggleLike = async (req, res) => {
+export const toggleLike = async (req, res) => {
   try {
     const { tripId } = req.params;
 
@@ -227,7 +233,7 @@ exports.toggleLike = async (req, res) => {
 };
 
 // ADD COMMENT TO TRIP
-exports.addComment = async (req, res) => {
+export const addComment = async (req, res) => {
   try {
     const { tripId } = req.params;
     const { text } = req.body;
@@ -260,7 +266,7 @@ exports.addComment = async (req, res) => {
 };
 
 // DELETE EXPENSE FROM TRIP
-exports.deleteExpense = async (req, res) => {
+export const deleteExpense = async (req, res) => {
   try {
     const { tripId, expenseId } = req.params;
 
@@ -284,7 +290,7 @@ exports.deleteExpense = async (req, res) => {
 };
 
 // ADD ITINERARY ITEM TO TRIP
-exports.addItinerary = async (req, res) => {
+export const addItinerary = async (req, res) => {
   try {
     const { tripId } = req.params;
     const { day, title, description, date, transport, stayDuration } = req.body;
@@ -312,7 +318,7 @@ exports.addItinerary = async (req, res) => {
   }
 };
 
-exports.deleteItinerary = async (req, res) => {
+export const deleteItinerary = async (req, res) => {
   try {
     const { tripId, itineraryId } = req.params;
 
@@ -334,7 +340,7 @@ exports.deleteItinerary = async (req, res) => {
   }
 };
 
-exports.updateItinerary = async (req, res) => {
+export const updateItinerary = async (req, res) => {
   try {
     const { tripId, itineraryId } = req.params;
     const updatedData = req.body;
@@ -366,7 +372,7 @@ exports.updateItinerary = async (req, res) => {
   }
 };
 
-exports.addItineraryExpense = async (req, res) => {
+export const addItineraryExpense = async (req, res) => {
   try {
     const { tripId, itineraryId } = req.params;
     const { title, amount, category } = req.body;
@@ -397,7 +403,7 @@ exports.addItineraryExpense = async (req, res) => {
   }
 };
 
-exports.deleteItineraryExpense = async (req, res) => {
+export const deleteItineraryExpense = async (req, res) => {
   try {
     const { tripId, itineraryId, expenseId } = req.params;
 
@@ -423,7 +429,7 @@ exports.deleteItineraryExpense = async (req, res) => {
   }
 };
 
-exports.deleteTrip = async (req, res) => {
+export const deleteTrip = async (req, res) => {
   try {
     const { tripId } = req.params;
 

@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const expenseSchema = new mongoose.Schema({
   title: {
@@ -103,7 +103,7 @@ const tripSchema = new mongoose.Schema(
 
     comments: [commentSchema],
   },
-  { timestamps: true },
+  { timestamps: true }
 );
 
-module.exports = mongoose.model("Trip", tripSchema);
+export default mongoose.model("Trip", tripSchema);
