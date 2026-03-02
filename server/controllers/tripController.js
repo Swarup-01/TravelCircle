@@ -1,4 +1,4 @@
-const Trip = require("../models/Trip.js");
+import Trip from "../models/Trip.js";
 
 // CREATE TRIP
 export const createTrip = async (req, res) => {
@@ -34,31 +34,29 @@ export const createTrip = async (req, res) => {
 // GET MY TRIPS WITH CALCULATIONS
 export const getMyTrips = async (req, res) => {
   try {
-   const trips = await Trip.find({ user: req.user.id });
+    const trips = await Trip.find({ user: req.user.id });
 
-   const tripsWithBudget = trips.map((trip) => {
-     let totalSpent = 0;
+    const tripsWithBudget = trips.map((trip) => {
+      let totalSpent = 0;
 
-     trip.itinerary.forEach((day) => {
-       day.expenses.forEach((expense) => {
-         totalSpent += expense.amount || 0;
-       });
-     });
+      trip.itinerary.forEach((day) => {
+        day.expenses.forEach((expense) => {
+          totalSpent += expense.amount || 0;
+        });
+      });
 
-     return {
-       ...trip._doc,
-       totalSpent,
-       remainingBudget: trip.estimatedBudget - totalSpent,
-     };
-   });
+      return {
+        ...trip._doc,
+        totalSpent,
+        remainingBudget: trip.estimatedBudget - totalSpent,
+      };
+    });
 
     res.status(200).json(tripsWithBudget);
-
   } catch (error) {
     res.status(500).json({ message: "Server Error", error });
   }
 };
-
 
 // ADD EXPENSE TO TRIP
 export const addExpense = async (req, res) => {
@@ -83,9 +81,8 @@ export const addExpense = async (req, res) => {
 
     res.status(200).json({
       message: "Expense added successfully 💰",
-      trip
+      trip,
     });
-
   } catch (error) {
     res.status(500).json({ message: "Server Error", error });
   }
@@ -97,22 +94,22 @@ export const getBudgetPrediction = async (req, res) => {
     const { destination } = req.params;
 
     const trips = await Trip.find({
-      destination: destination
+      destination: destination,
     });
 
     if (trips.length === 0) {
       return res.status(404).json({
-        message: "No data available for this destination"
+        message: "No data available for this destination",
       });
     }
 
     let totalAmount = 0;
     let tripCount = 0;
 
-    trips.forEach(trip => {
+    trips.forEach((trip) => {
       const totalSpent = trip.expenses.reduce(
         (sum, expense) => sum + expense.amount,
-        0
+        0,
       );
 
       if (totalSpent > 0) {
@@ -123,7 +120,7 @@ export const getBudgetPrediction = async (req, res) => {
 
     if (tripCount === 0) {
       return res.status(404).json({
-        message: "No expense data available"
+        message: "No expense data available",
       });
     }
 
@@ -132,9 +129,8 @@ export const getBudgetPrediction = async (req, res) => {
     res.status(200).json({
       destination,
       averageSpending: average,
-      message: `People who went to ${destination} spent approx ₹${average}`
+      message: `People who went to ${destination} spent approx ₹${average}`,
     });
-
   } catch (error) {
     res.status(500).json({ message: "Server Error", error });
   }
@@ -161,9 +157,8 @@ export const togglePublic = async (req, res) => {
 
     res.status(200).json({
       message: "Trip visibility updated 🌍",
-      isPublic: trip.isPublic
+      isPublic: trip.isPublic,
     });
-
   } catch (error) {
     res.status(500).json({ message: "Server Error", error });
   }
@@ -191,7 +186,6 @@ export const getPublicTrips = async (req, res) => {
     });
 
     res.status(200).json(tripsWithBudget);
-
   } catch (error) {
     res.status(500).json({ message: "Server Error", error });
   }
@@ -213,9 +207,7 @@ export const toggleLike = async (req, res) => {
     const alreadyLiked = trip.likes.includes(userId);
 
     if (alreadyLiked) {
-      trip.likes = trip.likes.filter(
-        (id) => id.toString() !== userId
-      );
+      trip.likes = trip.likes.filter((id) => id.toString() !== userId);
     } else {
       trip.likes.push(userId);
     }
@@ -224,9 +216,8 @@ export const toggleLike = async (req, res) => {
 
     res.status(200).json({
       message: alreadyLiked ? "Trip unliked 💔" : "Trip liked ❤️",
-      totalLikes: trip.likes.length
+      totalLikes: trip.likes.length,
     });
-
   } catch (error) {
     res.status(500).json({ message: "Server Error", error });
   }
@@ -250,16 +241,15 @@ export const addComment = async (req, res) => {
 
     trip.comments.push({
       user: req.user.id,
-      text
+      text,
     });
 
     await trip.save();
 
     res.status(200).json({
       message: "Comment added 💬",
-      totalComments: trip.comments.length
+      totalComments: trip.comments.length,
     });
-
   } catch (error) {
     res.status(500).json({ message: "Server Error", error });
   }
@@ -451,4 +441,3 @@ export const deleteTrip = async (req, res) => {
     res.status(500).json({ message: "Server Error", error });
   }
 };
-
