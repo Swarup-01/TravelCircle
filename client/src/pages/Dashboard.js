@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import API from "../services/api";
 import { useNavigate } from "react-router-dom";
 import {
@@ -32,9 +32,9 @@ function Dashboard() {
 
   useEffect(() => {
     fetchTrips();
-  }, []);
+  }, [fetchTrips]);
 
-  const fetchTrips = async () => {
+  const fetchTrips = useCallback(async () => {
     try {
       const res = await API.get("/trips/my");
       setTrips(res.data);
@@ -42,7 +42,7 @@ function Dashboard() {
       alert("Please login again");
       navigate("/login");
     }
-  };
+  }, [navigate]);
 
   const handleLogout = () => {
     localStorage.removeItem("token");
