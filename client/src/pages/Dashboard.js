@@ -30,10 +30,6 @@ function Dashboard() {
   const [itineraryExpenseData, setItineraryExpenseData] = useState({});
   const navigate = useNavigate();
 
-  useEffect(() => {
-    fetchTrips();
-  }, [fetchTrips]);
-
   const fetchTrips = useCallback(async () => {
     try {
       const res = await API.get("/trips/my");
@@ -43,6 +39,12 @@ function Dashboard() {
       navigate("/login");
     }
   }, [navigate]);
+  
+  useEffect(() => {
+    fetchTrips();
+  }, [fetchTrips]);
+
+  
 
   const handleLogout = () => {
     localStorage.removeItem("token");
