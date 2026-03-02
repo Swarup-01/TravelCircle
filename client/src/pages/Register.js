@@ -12,10 +12,10 @@ function Register() {
     e.preventDefault();
     try {
       await API.post("/auth/register", { name, email, password });
-      alert("Registration successful ✅");
+      alert("Registration successful! Please login.");
       navigate("/login");
     } catch (error) {
-      alert("Registration failed ❌");
+      alert("Registration failed");
     }
   };
 
