@@ -1,10 +1,9 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: "https://travel-circle.vercel.app/api",
+  baseURL: "/api",
 });
 
-// Automatically attach token if exists
 API.interceptors.request.use((req) => {
   const token = localStorage.getItem("token");
   if (token) {
