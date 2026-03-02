@@ -11,8 +11,8 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-app.use("/api/auth", authRoutes);
-app.use("/api/trips", tripRoutes);
+app.use("/auth", authRoutes);
+app.use("/trips", tripRoutes);
 
 app.get("/", (req, res) => {
   res.send("TravelCircle API is running...");
