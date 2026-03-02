@@ -57,4 +57,4 @@ router.delete("/:tripId", authMiddleware, deleteTrip);
 
 
 
-module.exports = router;
+export default router;  
