@@ -1,6 +1,5 @@
-const express = require("express");
-const router = express.Router();
-const {
+import express from "express";
+import {
   createTrip,
   deleteTrip,
   getMyTrips,
@@ -16,12 +15,11 @@ const {
   updateItinerary,
   addItineraryExpense,
   deleteItineraryExpense,
-} = require("../controllers/tripController");
+} from "../controllers/tripController.js";
 
+import authMiddleware from "../middleware/authMiddleware.js";
 
-
-
-const authMiddleware = require("../middleware/authMiddleware");
+const router = express.Router();
 
 router.post("/create", authMiddleware, createTrip);
 router.get("/my", authMiddleware, getMyTrips);
@@ -51,10 +49,4 @@ router.delete(
 );
 router.delete("/:tripId", authMiddleware, deleteTrip);
 
-
-
-
-
-
-
-export default router;  
+export default router;
